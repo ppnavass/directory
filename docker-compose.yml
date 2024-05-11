@@ -1,0 +1,22 @@
+services:
+  openldap:
+    image: bitnami/openldap:2
+    environment:
+      - LDAP_ADMIN_USERNAME=admin
+      - LDAP_ADMIN_PASSWORD=adminpassword
+    restart: on-failure
+
+  directory:
+    build: .
+    ports:
+      - 8003:8080
+    restart: on-failure
+    environment:
+      CHALLENGE_FLAG: "URJC{replace_with_real_flag}"
+    depends_on:
+      - openldap
+    volumes:
+    - m2:/root/.m2
+
+volumes:
+  m2:
